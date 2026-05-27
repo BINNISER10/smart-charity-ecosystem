@@ -110,7 +110,7 @@ async def submit_application(
 
 
 # ── GET / ─────────────────────────────────────────────────────────────────────
-@router.get("/", response_model=List[Dict[str, Any]], summary="قائمة الطلبات")
+@router.get("", response_model=List[Dict[str, Any]], summary="قائمة الطلبات")
 async def list_applications(
     status_filter: str = "",
     tenant: TenantContext = Depends(get_current_tenant),

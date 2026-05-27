@@ -55,7 +55,7 @@ def _serialize(b: Beneficiary) -> Dict[str, Any]:
 
 
 # ── GET / ─────────────────────────────────────────────────────────────────────
-@router.get("/", response_model=List[Dict[str, Any]], summary="قائمة المستفيدين")
+@router.get("", response_model=List[Dict[str, Any]], summary="قائمة المستفيدين")
 async def list_beneficiaries(
     include_archived: bool = False,
     tenant: TenantContext = Depends(get_current_tenant),
@@ -71,7 +71,7 @@ async def list_beneficiaries(
 
 # ── POST / ────────────────────────────────────────────────────────────────────
 @router.post(
-    "/",
+    "",
     status_code=201,
     response_model=HolisticPlanResponse,
     summary="تسجيل مستفيد + Holistic AI Triage",

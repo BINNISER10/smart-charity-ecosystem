@@ -33,7 +33,7 @@ router = APIRouter(prefix="/donations", tags=["Donations"])
 
 # ── POST / ────────────────────────────────────────────────────────────────────
 @router.post(
-    "/",
+    "",
     status_code=201,
     response_model=DonationResponse,
     summary="تسجيل تبرع",
