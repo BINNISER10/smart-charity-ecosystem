@@ -1,0 +1,67 @@
+################################################################################
+#  docker-compose.yml — منظومة العمل الخيري الذكي
+#  التشغيل الكامل: docker-compose up -d
+#  المتطلبات: إنشاء ملف .env من .env.example أولاً
+################################################################################
+
+version: "3.9"
+
+services:
+
+  # ── Backend (FastAPI) ─────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .                      # جذر المشروع (يحتوي smart_charity_ecosystem.py)
+      dockerfile: backend/Dockerfile
+    image: scs-backend:latest
+    container_name: scs-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - scs-data:/app/backend/data   # بيانات JSON مستمرة بين إعادات التشغيل
+    networks:
+      - scs-net
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/openapi.json')\""
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # ── Frontend SaaS (Next.js 14) ────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend-saas
+      dockerfile: Dockerfile
+      args:
+        BACKEND_URL: "http://backend:8000"   # داخل شبكة Docker
+    image: scs-frontend:latest
+    container_name: scs-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - scs-net
+
+# ── Shared Resources ──────────────────────────────────────────────────────────
+volumes:
+  scs-data:
+    name: scs-charity-data
+
+networks:
+  scs-net:
+    name: scs-network
+    driver: bridge

@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Cairo', Tajawal, sans-serif;
+}
+
+body {
+  direction: rtl;
+  background-color: #f1f5f9;
+}
+
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #f1f5f9; }
+::-webkit-scrollbar-thumb  { background: #94a3b8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-slate-100 p-5;
+  }
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg
+           font-semibold text-sm transition-colors disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg
+           font-semibold text-sm transition-colors;
+  }
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg
+           font-semibold text-sm transition-colors;
+  }
+  .input {
+    @apply w-full border border-slate-200 rounded-lg px-3 py-2 text-sm
+           focus:outline-none focus:ring-2 focus:ring-primary-400 bg-white;
+  }
+  .badge-green  { @apply bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium; }
+  .badge-yellow { @apply bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full font-medium; }
+  .badge-red    { @apply bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-medium; }
+  .badge-blue   { @apply bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium; }
+  .badge-gray   { @apply bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full font-medium; }
+}

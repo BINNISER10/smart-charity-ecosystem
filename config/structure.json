@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "الهيكل التنظيمي والصلاحيات لمنظومة العمل الخيري الذكي",
+    "last_updated": "2026-01-01"
+  },
+
+  "organization": {
+    "name":    "منظومة العمل الخيري الذكي",
+    "name_en": "Smart Charity Ecosystem",
+    "version": "1.0.0",
+    "vision":  "ريادة العمل الخيري بالذكاء الاصطناعي وفق المنهج الإسلامي"
+  },
+
+  "authority_matrix": {
+    "VOLUNTEER":      { "label": "متطوع",            "approval_limit": 0,       "can_submit": true,  "can_approve": false, "can_disburse": false },
+    "DATA_ENTRY":     { "label": "موظف إدخال",        "approval_limit": 0,       "can_submit": true,  "can_approve": false, "can_disburse": false },
+    "SECTOR_MANAGER": { "label": "مدير القطاع",       "approval_limit": 10000,   "can_submit": true,  "can_approve": true,  "can_disburse": false },
+    "FINANCE_MANAGER":{ "label": "مدير المالية",      "approval_limit": 50000,   "can_submit": true,  "can_approve": true,  "can_disburse": true  },
+    "EXEC_DIRECTOR":  { "label": "المدير التنفيذي",   "approval_limit": 100000,  "can_submit": true,  "can_approve": true,  "can_disburse": true  },
+    "BOARD_MEMBER":   { "label": "عضو مجلس إدارة",   "approval_limit": 500000,  "can_submit": true,  "can_approve": true,  "can_disburse": true  },
+    "SYSTEM_ADMIN":   { "label": "مدير النظام (API)", "approval_limit": 9999999, "can_submit": true,  "can_approve": true,  "can_disburse": true  }
+  },
+
+  "sectors": [
+    {
+      "key":         "HEALTH",
+      "name_ar":     "الصحة",
+      "name_en":     "Health",
+      "icon":        "🏥",
+      "fund":        "zakah",
+      "priority":    1,
+      "kpi_targets": { "approval_rate": 80, "avg_processing_days": 3, "satisfaction_score": 90 }
+    },
+    {
+      "key":         "HOUSING",
+      "name_ar":     "الإسكان",
+      "name_en":     "Housing",
+      "icon":        "🏠",
+      "fund":        "awqaf",
+      "priority":    2,
+      "kpi_targets": { "approval_rate": 60, "avg_processing_days": 7, "satisfaction_score": 85 }
+    },
+    {
+      "key":         "RECYCLING",
+      "name_ar":     "التدوير والاستدامة",
+      "name_en":     "Recycling",
+      "icon":        "♻️",
+      "fund":        "sadaqah",
+      "priority":    3,
+      "kpi_targets": { "waste_rate_max": 2.0, "items_processed_monthly": 500 }
+    },
+    {
+      "key":         "FOOD",
+      "name_ar":     "الإطعام وحفظ النعمة",
+      "name_en":     "Food",
+      "icon":        "🍽️",
+      "fund":        "sadaqah",
+      "priority":    4,
+      "kpi_targets": { "waste_rate_max": 2.0, "meals_per_month": 3000 }
+    }
+  ],
+
+  "workflow": {
+    "application_states": [
+      "مسودة",
+      "مقدَّم",
+      "تم التحليل الذكي",
+      "بانتظار الموافقة",
+      "موافق عليه",
+      "مرفوض",
+      "تم الصرف",
+      "ملغى",
+      "مغلق"
+    ],
+    "sla_days": {
+      "ai_analysis":  0,
+      "approval":     3,
+      "disbursement": 2
+    }
+  },
+
+  "system_users": {
+    "API-ADMIN": {
+      "name":       "مدير النظام (API)",
+      "role":       "SYSTEM_ADMIN",
+      "department": "النظام",
+      "is_active":  true
+    }
+  }
+}

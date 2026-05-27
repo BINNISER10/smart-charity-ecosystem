@@ -1,0 +1,42 @@
+################################################################################
+#  render.yaml — Render.com Blueprint
+#  ينشر Backend FastAPI تلقائياً عند ربطه بـ GitHub
+#  الموقع: https://render.com → New → Blueprint
+################################################################################
+
+services:
+  - type: web
+    name: scs-backend
+    runtime: python
+    plan: free                       # استخدم starter أو standard للإنتاج
+
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: >-
+      bash -c "cd backend && python -m uvicorn main:app
+      --host 0.0.0.0 --port $PORT --workers 2"
+
+    autoDeploy: true                 # يُعيد النشر تلقائياً عند كل push على main
+
+    envVars:
+      # ─── أمنية: يجب تعديلها في Render Dashboard ────────────────────────────
+      - key:          JWT_SECRET_KEY
+        generateValue: true          # Render يولد قيمة عشوائية تلقائياً
+
+      - key:   TOKEN_EXPIRE_HOURS
+        value:  "24"
+
+      # ─── Supabase (اختياري — تُضاف يدوياً في Dashboard) ───────────────────
+      # - key: SUPABASE_URL
+      #   value: https://your-project-id.supabase.co
+      # - key: SUPABASE_SERVICE_KEY
+      #   value: your-service-role-key
+
+      # ─── CORS: غيّر إلى رابط frontend الفعلي بعد النشر ────────────────────
+      - key:   ALLOWED_ORIGINS
+        value:  "*"
+
+      # ─── Python encoding ──────────────────────────────────────────────────
+      - key:   PYTHONIOENCODING
+        value:  utf-8
+      - key:   PYTHONUNBUFFERED
+        value:  "1"

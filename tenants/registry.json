@@ -1,0 +1,18 @@
+{
+  "riyadh_charity": {
+    "name": "جمعية البر بالرياض",
+    "plan": "Premium",
+    "monthly_cases_used": 1,
+    "monthly_reset": "2026-05",
+    "api_key": "key_riyadh_2026",
+    "active": true
+  },
+  "jeddah_charity": {
+    "name": "جمعية نفع بجدة",
+    "plan": "Basic",
+    "monthly_cases_used": 0,
+    "monthly_reset": "2026-05",
+    "api_key": "key_jeddah_2026",
+    "active": true
+  }
+}

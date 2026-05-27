@@ -1,0 +1,23 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  netlify.toml — Frontend SaaS على Netlify
+#  الإعداد: سيطلب Netlify قيمة NEXT_PUBLIC_API_URL من Dashboard
+# ══════════════════════════════════════════════════════════════════════════════
+
+[build]
+  command   = "npm run build"
+  publish   = ".next"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION            = "18"
+  # BACKEND_URL يُضبط في Netlify Dashboard → Environment variables
+  # مثال: BACKEND_URL = https://scs-backend.onrender.com
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from   = "/api/v1/*"
+  to     = ":BACKEND_URL/api/v1/:splat"
+  status = 200
+  force  = true

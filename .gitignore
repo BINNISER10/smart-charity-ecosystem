@@ -1,0 +1,62 @@
+# بيانات حساسة
+.env
+*.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# البيانات المحلية
+charity_data.json
+charity.db
+charity_report_*.txt
+
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+*.local
+
+# بيئة Python
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs مؤقتة
+logs/*.log
+
+# تقارير مُصدَّرة
+reports/financial/*.html
+reports/performance/*.xlsx
+
+# Next.js build artifacts
+.next/
+out/
+*.tsbuildinfo
+
+# Test & coverage
+.pytest_cache/
+.coverage
+coverage/
+coverage_html/
+htmlcov/
+
+# بيانات المستأجرين (تُولَّد تلقائياً)
+charity_data_*.json
+data/
+
+# Docker
+*.tar
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+desktop.ini

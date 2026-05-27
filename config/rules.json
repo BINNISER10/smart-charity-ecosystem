@@ -1,0 +1,89 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "القواعد الشرعية والنظامية لمنظومة العمل الخيري الذكي",
+    "authority": "مجلس الإدارة — معتمد ومراجع شرعياً",
+    "last_updated": "2026-01-01"
+  },
+
+  "zakah": {
+    "categories": [
+      "الفقراء",
+      "المساكين",
+      "العاملون عليها",
+      "المؤلفة قلوبهم",
+      "في الرقاب",
+      "الغارمون",
+      "في سبيل الله",
+      "ابن السبيل"
+    ],
+    "nisab_gold_grams": 85,
+    "nisab_silver_grams": 595,
+    "zakat_rate": 0.025,
+    "gold_price_per_gram_sar": 230.0,
+    "silver_price_per_gram_sar": 3.0,
+    "crop_weight_threshold_kg": 653,
+    "livestock_thresholds": {
+      "camels": 5,
+      "cattle": 30,
+      "sheep": 40
+    },
+    "income_threshold_monthly_sar": 6000,
+    "max_allocation_ratio": 0.125,
+    "condition": "يُصرف فقط لمن لا يملك حاجته الأساسية، ولا يُصرف لغني ولا لقوي مكتسب"
+  },
+
+  "eligibility": {
+    "income_limits": {
+      "single":           3000,
+      "family_2":         4000,
+      "family_3":         5000,
+      "family_4_plus":    6000
+    },
+    "disability_bonus_income": 2000,
+    "max_monthly_income_sar": 6000,
+    "min_family_size_for_priority": 4
+  },
+
+  "approval_limits": {
+    "sector_manager":       10000,
+    "executive_director":  100000,
+    "board_of_directors": 9999999
+  },
+
+  "sectors": {
+    "health": {
+      "rule": "أولوية قصوى للحالات الحرجة والمزمنة، ومطابقة معايير الصحة العالمية",
+      "max_single_disbursement": 50000,
+      "emergency_fast_track": true
+    },
+    "housing": {
+      "rule": "الدعم لمن لا يملك مسكناً ودخله أقل من الحد الأدنى، وضمان جودة المسكن",
+      "max_single_disbursement": 100000,
+      "requires_site_visit": true
+    },
+    "food": {
+      "rule": "ضمان سلامة الغذاء، وتطبيق معايير حفظ النعمة، وتقليل الفاقد لأقل من 2%",
+      "max_waste_rate_percent": 2.0,
+      "requires_halal_certificate": true
+    },
+    "recycling": {
+      "rule": "تقييم دقيق للتبرعات العينية، وتحويلها لقيمة مالية أو عينية معتمدة",
+      "min_condition_score": 6,
+      "requires_valuation_report": true
+    }
+  },
+
+  "audit": {
+    "retention_years": 10,
+    "immutable": true,
+    "requires_dual_signature_above": 50000
+  },
+
+  "funds": {
+    "zakah":    { "description": "أموال الزكاة — مصارفها محددة شرعاً",     "transferable": false },
+    "sadaqah":  { "description": "الصدقات العامة — تُصرف في وجوه الخير",    "transferable": true  },
+    "awqaf":    { "description": "الأوقاف — أموال محبسة لا تُصرف من أصلها", "transferable": false },
+    "projects": { "description": "المشاريع التنموية والموسمية",              "transferable": true  }
+  }
+}
