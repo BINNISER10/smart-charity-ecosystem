@@ -101,7 +101,7 @@ export default function AdminDashboard() {
         <h2 className="text-base font-semibold text-slate-900 dark:text-white mb-4">
           آخر الطلبات
         </h2>
-        {(applications as Record<string, string>[]).length === 0 ? (
+        {(applications as unknown as Record<string, string>[]).length === 0 ? (
           <p className="text-sm text-slate-500 text-center py-8">لا توجد طلبات بعد</p>
         ) : (
           <div className="overflow-x-auto">
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
-                {(applications as Record<string, string>[]).slice(-10).reverse().map((a) => (
+                {(applications as unknown as Record<string, string>[]).slice(-10).reverse().map((a) => (
                   <tr key={a.application_id}>
                     <td className="py-3 font-mono text-xs text-slate-600 dark:text-slate-400">
                       {a.application_id?.slice(-8)}
