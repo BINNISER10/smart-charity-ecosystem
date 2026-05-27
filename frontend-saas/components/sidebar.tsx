@@ -8,14 +8,20 @@ import {
   LogOut,
   ChevronRight,
   Sparkles,
+  Users,
+  FileText,
+  HandHeart,
 } from "lucide-react";
 import { clsx } from "clsx";
 import toast from "react-hot-toast";
 import { clearSession, getTenantId } from "@/lib/auth";
 
 const NAV = [
-  { href: "/admin",         label: "لوحة التحكم",   icon: LayoutDashboard },
-  { href: "/admin/impact",  label: "تقارير الأثر",  icon: Sparkles },
+  { href: "/admin",              label: "لوحة التحكم",   icon: LayoutDashboard },
+  { href: "/admin/beneficiaries",label: "المستفيدون",    icon: Users },
+  { href: "/admin/applications", label: "الطلبات",       icon: FileText },
+  { href: "/admin/donations",    label: "التبرعات",      icon: HandHeart },
+  { href: "/admin/impact",       label: "تقارير الأثر",  icon: Sparkles },
 ];
 
 export function Sidebar() {
