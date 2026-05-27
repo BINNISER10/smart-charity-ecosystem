@@ -8,6 +8,8 @@ fastapi>=0.109.0              # إطار API سريع وحديث
 uvicorn[standard]>=0.27.0     # خادم ASGI عالي الأداء
 pydantic>=2.5.0               # التحقق من البيانات وتوثيقها
 python-dotenv>=1.0.0          # تحميل إعدادات .env
+python-jose[cryptography]>=3.3.0  # JWT authentication
+supabase>=2.0.0               # قاعدة بيانات Supabase (اختياري — يتراجع لـ JSON)
 
 # ── تصدير البيانات ────────────────────────────────────────────────
 openpyxl>=3.1.0               # إنشاء ملفات Excel (.xlsx)
