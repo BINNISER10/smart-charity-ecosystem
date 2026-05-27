@@ -36,37 +36,47 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="flex h-screen w-64 flex-col border-l border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+    <aside className="flex h-screen w-64 flex-col bg-gradient-to-b from-brand-900 to-brand-950 shadow-xl">
       {/* Brand */}
-      <div className="flex items-center gap-3 px-5 py-6 border-b border-slate-200 dark:border-slate-700">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600">
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
           <Heart className="h-5 w-5 text-white" />
         </div>
         <div>
-          <p className="text-sm font-bold text-slate-900 dark:text-white">العمل الخيري</p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">{tenant}</p>
+          <p className="text-sm font-bold text-white leading-tight">منظومة الخير</p>
+          <p className="text-xs text-brand-300 mt-0.5">{tenant}</p>
         </div>
       </div>
 
+      {/* تسمية القسم */}
+      <p className="px-5 pt-5 pb-2 text-[10px] font-bold uppercase tracking-widest text-brand-400/70">
+        القائمة الرئيسية
+      </p>
+
       {/* Nav */}
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 space-y-0.5 px-3">
         {NAV.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
+          const active = pathname === href || (href !== "/admin" && pathname.startsWith(href));
           return (
             <Link
               key={href}
               href={href}
               className={clsx(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
                 active
-                  ? "bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400"
-                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                  ? "bg-white/15 text-white shadow-sm"
+                  : "text-brand-200 hover:bg-white/8 hover:text-white"
               )}
             >
-              <Icon className="h-4 w-4 shrink-0" />
-              {label}
+              <div className={clsx(
+                "flex h-7 w-7 items-center justify-center rounded-lg transition-all",
+                active ? "bg-white/20" : "bg-white/5"
+              )}>
+                <Icon className="h-3.5 w-3.5" />
+              </div>
+              <span className="flex-1">{label}</span>
               {active && (
-                <ChevronRight className="mr-auto h-3.5 w-3.5 text-brand-600 dark:text-brand-400" />
+                <ChevronRight className="h-3 w-3 text-white/60" />
               )}
             </Link>
           );
@@ -74,12 +84,14 @@ export function Sidebar() {
       </nav>
 
       {/* Logout */}
-      <div className="px-3 pb-5">
+      <div className="px-3 pb-5 border-t border-white/10 pt-4">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-300 transition hover:bg-red-500/15 hover:text-red-200"
         >
-          <LogOut className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-500/10">
+            <LogOut className="h-3.5 w-3.5" />
+          </div>
           تسجيل الخروج
         </button>
       </div>

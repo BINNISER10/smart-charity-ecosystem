@@ -3,20 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 15, 23, 42;
-  --background-rgb: 248, 250, 252;
+  --brand-primary:  #2563EB;
+  --brand-dark:     #1E3A8A;
+  --gold:           #D97706;
+  --bg:             #F1F5F9;
+  --surface:        #FFFFFF;
+  --border:         #E2E8F0;
+  --text-primary:   #0F172A;
+  --text-secondary: #475569;
+  --text-muted:     #94A3B8;
+  --sidebar-w:      256px;
+  --header-h:       60px;
 }
 
 .dark {
-  --foreground-rgb: 241, 245, 249;
-  --background-rgb: 15, 23, 42;
+  --bg:             #0F172A;
+  --surface:        #1E293B;
+  --border:         #334155;
+  --text-primary:   #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted:     #475569;
 }
 
+html { scroll-behavior: smooth; }
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  margin: 0;
   font-family: "Cairo", "Tajawal", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--text-primary);
   direction: rtl;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 @layer components {
