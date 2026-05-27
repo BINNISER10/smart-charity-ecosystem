@@ -45,6 +45,7 @@ app = FastAPI(
     title="Smart Charity Ecosystem API",
     description="واجهة برمجية لمنظومة العمل الخيري الذكي",
     version="1.0.0",
+    redirect_slashes=False,
 )
 
 _origins_raw = os.getenv("ALLOWED_ORIGINS", "*")
