@@ -21,6 +21,7 @@ for _p in (_ROOT, _BACKEND):
         sys.path.insert(0, _p)
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 
 from api.deps import get_current_tenant
 from core import get_eco, save_eco
@@ -136,3 +137,60 @@ async def get_application(
     if not a or a.tenant_id != tenant.tenant_id:
         raise HTTPException(status_code=404, detail="الطلب غير موجود")
     return _serialize(a)
+
+
+# ── Request bodies ───────────────────────────────────────────────────────────
+class ApproveReq(BaseModel):
+    approved_amount: float
+    notes: str = ""
+
+class RejectReq(BaseModel):
+    reason: str = "مرفوض من قِبَل المدير"
+
+
+@router.post("/{application_id}/approve", summary="الموافقة على طلب")
+async def approve_application(
+    application_id: str,
+    data: ApproveReq,
+    tenant: TenantContext = Depends(get_current_tenant),
+) -> Dict[str, Any]:
+    eco = get_eco(tenant.tenant_id)
+    a = eco._all_applications.get(application_id)
+    if not a or a.tenant_id != tenant.tenant_id:
+        raise HTTPException(status_code=404, detail="الطلب غير موجود")
+    ok, msg = eco.process_approval(application_id, tenant.username, data.approved_amount, data.notes)
+    if not ok:
+        raise HTTPException(status_code=400, detail=msg)
+    save_eco(tenant.tenant_id)
+    return {"success": True, "message": msg, **_serialize(a)}
+
+
+@router.post("/{application_id}/reject", summary="رفض طلب")
+async def reject_application(
+    application_id: str,
+    data: RejectReq,
+    tenant: TenantContext = Depends(get_current_tenant),
+) -> Dict[str, Any]:
+    eco = get_eco(tenant.tenant_id)
+    a = eco._all_applications.get(application_id)
+    if not a or a.tenant_id != tenant.tenant_id:
+        raise HTTPException(status_code=404, detail="الطلب غير موجود")
+    eco.governance.reject_application(a, tenant.username, data.reason)
+    save_eco(tenant.tenant_id)
+    return {"success": True, **_serialize(a)}
+
+
+@router.post("/{application_id}/disburse", summary="صرف مبلغ الطلب")
+async def disburse_application(
+    application_id: str,
+    tenant: TenantContext = Depends(get_current_tenant),
+) -> Dict[str, Any]:
+    eco = get_eco(tenant.tenant_id)
+    a = eco._all_applications.get(application_id)
+    if not a or a.tenant_id != tenant.tenant_id:
+        raise HTTPException(status_code=404, detail="الطلب غير موجود")
+    ok, msg = eco.process_disbursement(application_id, tenant.username)
+    if not ok:
+        raise HTTPException(status_code=400, detail=msg)
+    save_eco(tenant.tenant_id)
+    return {"success": True, "message": msg, **_serialize(a)}

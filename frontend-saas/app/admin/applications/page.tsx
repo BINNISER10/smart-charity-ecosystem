@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileText, Filter, Loader2, Zap } from "lucide-react";
+import { FileText, Filter, Loader2, Zap, CheckCircle2, XCircle, Banknote } from "lucide-react";
 import toast from "react-hot-toast";
 import { applicationsApi, ApplicationResponse } from "@/lib/api";
 
@@ -24,6 +24,7 @@ export default function ApplicationsPage() {
   const [list, setList]       = useState<ApplicationResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter]   = useState("");
+  const [actioning, setActioning] = useState<string | null>(null);
 
   const load = (f = filter) => {
     setLoading(true);
@@ -34,6 +35,44 @@ export default function ApplicationsPage() {
   };
 
   useEffect(() => { load(); }, []);
+
+  const handleApprove = async (a: ApplicationResponse) => {
+    const amt = window.prompt(`الموافقة على الطلب\nأدخل المبلغ الموافق عليه (الكامل: ${a.requested_amount} ر.س):`, String(a.requested_amount));
+    if (!amt) return;
+    setActioning(a.application_id);
+    try {
+      await applicationsApi.approve(a.application_id, Number(amt));
+      toast.success("تمت الموافقة على الطلب ✅");
+      load();
+    } catch (e: unknown) {
+      const msg = (e as {response?: {data?: {detail?: string}}})?.response?.data?.detail;
+      toast.error(msg || "تعذّر الموافقة");
+    } finally { setActioning(null); }
+  };
+
+  const handleReject = async (id: string) => {
+    if (!window.confirm("هل تريد رفض هذا الطلب؟")) return;
+    setActioning(id);
+    try {
+      await applicationsApi.reject(id);
+      toast.success("تم رفض الطلب");
+      load();
+    } catch { toast.error("تعذّر الرفض"); }
+    finally { setActioning(null); }
+  };
+
+  const handleDisburse = async (id: string) => {
+    if (!window.confirm("تأكيد صرف المبلغ للمستفيد؟")) return;
+    setActioning(id);
+    try {
+      await applicationsApi.disburse(id);
+      toast.success("تم صرف المبلغ ✅");
+      load();
+    } catch (e: unknown) {
+      const msg = (e as {response?: {data?: {detail?: string}}})?.response?.data?.detail;
+      toast.error(msg || "تعذّر الصرف");
+    } finally { setActioning(null); }
+  };
 
   return (
     <div className="space-y-6">
@@ -77,7 +116,7 @@ export default function ApplicationsPage() {
           <table className="w-full text-sm text-right">
             <thead className="bg-slate-50 dark:bg-slate-800">
               <tr>
-                {["رقم الطلب", "القطاع", "المبلغ المطلوب", "المبلغ الموافق", "الأولوية", "درجة AI", "الحالة", "تاريخ التقديم"].map((h) => (
+                {["رقم الطلب", "القطاع", "المبلغ المطلوب", "المبلغ الموافق", "الأولوية", "درجة AI", "الحالة", "تاريخ التقديم", "الإجراءات"].map((h) => (
                   <th key={h} className="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400">{h}</th>
                 ))}
               </tr>
@@ -113,6 +152,39 @@ export default function ApplicationsPage() {
                       <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${st.color}`}>{st.label}</span>
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">{a.submission_date_h}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        {a.status === "PENDING" && (
+                          <>
+                            <button
+                              onClick={() => handleApprove(a)}
+                              disabled={actioning === a.application_id}
+                              className="flex items-center gap-1 rounded-lg bg-green-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                            >
+                              {actioning === a.application_id ? <Loader2 className="h-3 w-3 animate-spin" /> : <CheckCircle2 className="h-3 w-3" />}
+                              موافقة
+                            </button>
+                            <button
+                              onClick={() => handleReject(a.application_id)}
+                              disabled={actioning === a.application_id}
+                              className="flex items-center gap-1 rounded-lg bg-red-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-600 disabled:opacity-50"
+                            >
+                              <XCircle className="h-3 w-3" /> رفض
+                            </button>
+                          </>
+                        )}
+                        {a.status === "APPROVED" && (
+                          <button
+                            onClick={() => handleDisburse(a.application_id)}
+                            disabled={actioning === a.application_id}
+                            className="flex items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                          >
+                            {actioning === a.application_id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Banknote className="h-3 w-3" />}
+                            صرف
+                          </button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 );
               })}

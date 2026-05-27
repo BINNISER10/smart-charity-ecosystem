@@ -177,6 +177,21 @@ export const applicationsApi = {
 
   get: (id: string) =>
     apiClient.get<ApplicationResponse>(`/applications/${id}`).then((r) => r.data),
+
+  approve: (id: string, approved_amount: number, notes = "") =>
+    apiClient
+      .post<ApplicationResponse>(`/applications/${id}/approve`, { approved_amount, notes })
+      .then((r) => r.data),
+
+  reject: (id: string, reason = "مرفوض من قِبَل المدير") =>
+    apiClient
+      .post<ApplicationResponse>(`/applications/${id}/reject`, { reason })
+      .then((r) => r.data),
+
+  disburse: (id: string) =>
+    apiClient
+      .post<ApplicationResponse>(`/applications/${id}/disburse`, {})
+      .then((r) => r.data),
 };
 
 // ── Donations ─────────────────────────────────────────────────────────────────
