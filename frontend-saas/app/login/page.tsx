@@ -72,7 +72,7 @@ export default function LoginPage() {
                 اسم المستخدم
               </label>
               <input
-                type="email"
+                type="text"
                 placeholder="admin@org_a"
                 value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
